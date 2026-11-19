@@ -1,0 +1,73 @@
+// A message type described at run time and used through reflection — no protoc,
+// no generated code: protobuf's descriptors are messages themselves. Its wire
+// bytes, text and JSON forms are printed and read back; then the well-known
+// types: Timestamp and Duration arithmetic, Struct as JSON, Any.
+import std;
+import mcpplibs.mwrap.protobuf;
+
+namespace pb = google::protobuf;
+
+int main() {
+    // demo.Person { string name = 1; int32 id = 2; repeated string email = 3; }
+    pb::FileDescriptorProto file;
+    file.set_name("person.proto");
+    file.set_package("demo");
+    file.set_syntax("proto3");
+    pb::DescriptorProto* person = file.add_message_type();
+    person->set_name("Person");
+    auto field = [&](const char* name, int number, pb::FieldDescriptorProto::Type type, bool repeated) {
+        pb::FieldDescriptorProto* f = person->add_field();
+        f->set_name(name);
+        f->set_json_name(name);
+        f->set_number(number);
+        f->set_type(type);
+        f->set_label(repeated ? pb::FieldDescriptorProto::LABEL_REPEATED : pb::FieldDescriptorProto::LABEL_OPTIONAL);
+    };
+    field("name", 1, pb::FieldDescriptorProto::TYPE_STRING, false);
+    field("id", 2, pb::FieldDescriptorProto::TYPE_INT32, false);
+    field("email", 3, pb::FieldDescriptorProto::TYPE_STRING, true);
+
+    pb::DescriptorPool pool;
+    const pb::Descriptor* type = pool.BuildFile(file)->FindMessageTypeByName("Person");
+    pb::DynamicMessageFactory factory(&pool);
+    std::unique_ptr<pb::Message> ada(factory.GetPrototype(type)->New());
+    const pb::Reflection* reflection = ada->GetReflection();
+    reflection->SetString(ada.get(), type->FindFieldByName("name"), "Ada");
+    reflection->SetInt32(ada.get(), type->FindFieldByName("id"), 7);
+    reflection->AddString(ada.get(), type->FindFieldByName("email"), "ada@example.org");
+
+    std::string wire, text, json;
+    ada->SerializeToString(&wire);
+    pb::TextFormat::PrintToString(*ada, &text);
+    (void)pb::json::MessageToJsonString(*ada, &json);
+    std::print("{} — {} bytes on the wire:", type->full_name(), wire.size());
+    for (unsigned char c : wire) std::print(" {:02x}", c);
+    std::println("\ntext: {}json: {}", text, json);
+
+    std::unique_ptr<pb::Message> back(ada->New());
+    const bool json_ok = pb::json::JsonStringToMessage(json, back.get()).ok();
+    const bool same = json_ok && pb::util::MessageDifferencer::Equals(*ada, *back);
+    std::println("read back from JSON: {}", same ? "equal" : "DIFFERENT");
+
+    pb::Timestamp start;
+    pb::util::TimeUtil::FromString("2026-11-19T08:30:00Z", &start);
+    const pb::Duration ninety = pb::util::TimeUtil::SecondsToDuration(90);
+    std::println("{} + {} = {}", pb::util::TimeUtil::ToString(start), pb::util::TimeUtil::ToString(ninety),
+                 pb::util::TimeUtil::ToString(start + ninety));
+
+    pb::Struct object;
+    (*object.mutable_fields())["service"].set_string_value("demo");
+    (*object.mutable_fields())["replicas"].set_number_value(3);
+    std::string object_json;
+    (void)pb::json::MessageToJsonString(object, &object_json);
+    std::println("Struct as JSON: {}", object_json);
+
+    pb::Any any;
+    any.PackFrom(start);
+    pb::Timestamp unpacked;
+    const bool any_ok = any.Is<pb::Timestamp>() && any.UnpackTo(&unpacked) && unpacked.seconds() == start.seconds();
+    std::println("Any holding {}: {}", any.type_url(), any_ok ? "unpacked" : "FAILED");
+
+    const bool ok = wire.size() == 24 && same && any_ok && pb::util::TimeUtil::ToString(start + ninety) == "2026-11-19T08:31:30Z";
+    return ok ? 0 : 1;
+}

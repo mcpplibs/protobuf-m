@@ -1,0 +1,9 @@
+// Code generation: every .proto under proto/ becomes one build-graph edge that
+// runs protoc (C++ messages, <name>.pb.h / <name>.pb.cc). Add a .proto to
+// proto/ and build; nothing here changes.
+import mcpp;
+import protogen;
+
+int main() {
+    return protogen::generate_all() ? 0 : 1;
+}

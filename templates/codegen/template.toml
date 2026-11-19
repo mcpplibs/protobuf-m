@@ -1,0 +1,3 @@
+[template]
+description  = "Generated code: proto/*.proto compiled by protoc during the build (protogen), used with import mcpplibs.mwrap.protobuf"
+post_message = "Run `mcpp run`. The .pb.h/.pb.cc are not checked in: mcpp builds protoc from the protobuf release you link and generates them during the build. Add a .proto to proto/ and build. (Not on Windows: protoc is not built there.)"

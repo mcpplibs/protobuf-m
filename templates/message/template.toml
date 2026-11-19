@@ -1,0 +1,4 @@
+[template]
+description  = "A message type made at run time: DynamicMessage, wire bytes, text, JSON and the well-known types with import mcpplibs.mwrap.protobuf"
+default      = true
+post_message = "Run `mcpp run`. No protoc involved; for generated code use the `codegen` template."

@@ -1,0 +1,12 @@
+# The `gzip` feature: GzipOutputStream / GzipInputStream (compat.protobuf over
+# compat.zlib) through import mcpplibs.mwrap.protobuf.io.gzip. CI runs it.
+[package]
+name    = "gzip-example"
+version = "0.1.0"
+
+[targets.gzip-example]
+kind = "bin"
+main = "src/main.cpp"
+
+[dependencies]
+mcpplibs.mwrap.protobuf = { path = "../..", features = ["gzip"] }

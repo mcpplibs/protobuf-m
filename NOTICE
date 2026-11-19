@@ -1,0 +1,20 @@
+protobuf-m: C++ module wrapper
+Copyright (c) 2026 mcpp-community contributors
+
+The wrapper contributions are licensed under the Apache License, Version 2.0.
+Upstream code, copied interfaces and dependencies retain their original
+licenses and copyright notices:
+
+  Protocol Buffers, under the BSD 3-Clause License:
+    Copyright 2008 Google Inc. (Google LLC). All rights reserved.
+  utf8_range (third_party/utf8_range of the protobuf release), under the MIT
+  License:
+    Copyright (c) 2019 Yibo Cai. Copyright 2022 Google LLC.
+  Abseil (compat.abseil, which protobuf links), under the Apache License 2.0:
+    Copyright The Abseil Authors.
+
+Their original README and licenses are retained in upstream/protobuf/,
+upstream/utf8_range/ and upstream/abseil-cpp/. The library itself is built by
+compat.protobuf 35.1 over compat.abseil 20250512.1 from the same releases.
+rules/ (protogen) is derived from grpc-m's grpcgen (Apache-2.0, mcpp-community).
+Provenance and checksums are recorded in upstream/documents.json.
