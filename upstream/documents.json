@@ -1,0 +1,29 @@
+{
+  "upstream": "https://github.com/protocolbuffers/protobuf/releases/download/v35.1/protobuf-35.1.tar.gz",
+  "upstream_sha256": "f0b6838e7522a8da96126d487068c959bc624926368f3024ac8fd03abd0a1ac4",
+  "abseil": "https://github.com/abseil/abseil-cpp/releases/download/20250512.1/abseil-cpp-20250512.1.tar.gz",
+  "abseil_sha256": "9b7a064305e9fd94d124ffa6cc358592eb42b5da588fb4e07d09254aa40086db",
+  "pruning": "Nothing of protobuf is vendored: the library is compat.protobuf 35.1 (libprotobuf, with utf8_range from the same tarball), over compat.abseil 20250512.1, both built from these release tarballs. Their README and licenses are retained here; Abseil's because a program that links protobuf links it too. The module surface is read from the release headers (tools/surface.py).",
+  "documents": [
+    {
+      "path": "upstream/protobuf/README.md",
+      "source": "https://github.com/protocolbuffers/protobuf/blob/v35.1/README.md",
+      "sha256": "766a75d175e1005821ed5996724eb4c051ea6e735fc95c135271fa4068a70a98"
+    },
+    {
+      "path": "upstream/protobuf/LICENSE",
+      "source": "https://github.com/protocolbuffers/protobuf/blob/v35.1/LICENSE",
+      "sha256": "6e5e117324afd944dcf67f36cf329843bc1a92229a8cd9bb573d7a83130fea7d"
+    },
+    {
+      "path": "upstream/utf8_range/LICENSE",
+      "source": "https://github.com/protocolbuffers/protobuf/blob/v35.1/third_party/utf8_range/LICENSE",
+      "sha256": "02de69b64fc36d9e938f418e52723e42f0b2b226d58a9cb3c8dcbdf7059f5074"
+    },
+    {
+      "path": "upstream/abseil-cpp/LICENSE",
+      "source": "https://github.com/abseil/abseil-cpp/blob/20250512.1/LICENSE",
+      "sha256": "c79a7fea0e3cac04cd43f20e7b648e5a0ff8fa5344e644b0ee09ca1162b62747"
+    }
+  ]
+}
