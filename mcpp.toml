@@ -25,6 +25,8 @@ compat.protobuf = "35.1"
 
 [dev-dependencies]
 compat.gtest = "1.15.2"
+# tests/abseil_identity_test.cpp: protobuf's absl::Status is mcpplibs.mwrap.abseil's.
+mcpplibs.mwrap.abseil = "20250512.1"
 
 # GzipInputStream / GzipOutputStream: compat.protobuf compiles them only with
 # its gzip feature (over compat.zlib), so their module exists only here.
