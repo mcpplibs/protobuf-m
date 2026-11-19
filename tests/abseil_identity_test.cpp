@@ -14,10 +14,12 @@ TEST(Abseil, ProtobufStatusIsAbseilStatus) {
     static_assert(std::is_same_v<decltype(pb::json::JsonStringToMessage(std::string_view{}, &object)), absl::Status>);
     const absl::Status bad = pb::json::JsonStringToMessage("{not json", &object);
     EXPECT_FALSE(bad.ok());
-    EXPECT_EQ(bad.code(), absl::StatusCode::kInvalidArgument);
+    // As integers: GCC 16 on aarch64 stops with an internal compiler error (dwarf2out, gen_enumeration_type_die)
+    // when the debug information of an imported enumeration reaches GoogleTest's templates.
+    EXPECT_EQ(static_cast<int>(bad.code()), static_cast<int>(absl::StatusCode::kInvalidArgument));
     EXPECT_TRUE(absl::IsInvalidArgument(bad));
     const absl::Status good = pb::json::JsonStringToMessage(R"({"a":1})", &object);
-    EXPECT_TRUE(good.ok()) << good;
+    EXPECT_TRUE(good.ok()) << good.message();
     static_assert(std::is_same_v<absl::string_view, std::string_view>);
     EXPECT_EQ(absl::StrCat("fields: ", object.fields_size()), "fields: 1");
 }
