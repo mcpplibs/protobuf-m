@@ -89,6 +89,7 @@ module;
 #include <google/protobuf/wire_format.h>
 #include <google/protobuf/wire_format_lite.h>
 #include <google/protobuf/wrappers.pb.h>
+#include "detail/epilogue.hpp"
 
 namespace mwrap_protobuf_macros {
 inline constexpr auto value_GOOGLE_PROTOBUF_VERSION = GOOGLE_PROTOBUF_VERSION;

@@ -13,6 +13,7 @@ module;
 #include <google/protobuf/util/type_resolver.h>
 #include <google/protobuf/util/type_resolver_util.h>
 #include <google/protobuf/json/json.h>
+#include "detail/epilogue.hpp"
 
 export module mcpplibs.mwrap.protobuf.util;
 

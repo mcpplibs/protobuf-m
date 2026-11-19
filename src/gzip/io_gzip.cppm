@@ -5,6 +5,7 @@
 module;
 #include "../detail/prelude.hpp"
 #include <google/protobuf/io/gzip_stream.h>
+#include "../detail/epilogue.hpp"
 
 export module mcpplibs.mwrap.protobuf.io.gzip;
 

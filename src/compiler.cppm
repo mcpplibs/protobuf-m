@@ -6,6 +6,7 @@ module;
 #include "detail/prelude.hpp"
 #include <google/protobuf/compiler/importer.h>
 #include <google/protobuf/compiler/parser.h>
+#include "detail/epilogue.hpp"
 
 export module mcpplibs.mwrap.protobuf.compiler;
 

@@ -88,6 +88,7 @@ module;
 #include <google/protobuf/wire_format.h>
 #include <google/protobuf/wire_format_lite.h>
 #include <google/protobuf/wrappers.pb.h>
+#include "detail/epilogue.hpp"
 
 export module mcpplibs.mwrap.protobuf;
 

@@ -406,8 +406,9 @@ def module_text(module, surface):
              '// each name is a using-declaration of the upstream entity in the namespace upstream declares it in.']
     if module == 'protobuf':
         lines.append('// The root also re-exports the other modules (gzip only through its own import, with the feature).')
-    lines += ['module;', '#include "detail/prelude.hpp"' if module != 'gzip' else '#include "../detail/prelude.hpp"',
-              *[f'#include <{h}>' for h in surface['headers'][module]], '', f'export module {name};', '']
+    detail = 'detail/' if module != 'gzip' else '../detail/'
+    lines += ['module;', f'#include "{detail}prelude.hpp"', *[f'#include <{h}>' for h in surface['headers'][module]],
+              f'#include "{detail}epilogue.hpp"', '', f'export module {name};', '']
     if module == 'protobuf':
         lines += ['export import mcpplibs.mwrap.protobuf.io;', 'export import mcpplibs.mwrap.protobuf.util;',
                   'export import mcpplibs.mwrap.protobuf.compiler;', 'export import mcpplibs.mwrap.protobuf.macros;', '']
@@ -433,7 +434,7 @@ def macros_text(surface):
              '// mcpplibs::mwrap::protobuf::macros, and GOOGLE_PROTOBUF_WIRE_FORMAT_MAKE_TAG as a constexpr function. A module',
              '// does not export macros: the others (GOOGLE_PROTOBUF_VERIFY_VERSION, the platform switches …) come from',
              '// #include <mwrap/protobuf/macros.hpp>, before the import.', 'module;', '#include "detail/prelude.hpp"',
-             *[f'#include <{h}>' for h in surface['headers']['protobuf']], '', 'namespace mwrap_protobuf_macros {']
+             *[f'#include <{h}>' for h in surface['headers']['protobuf']], '#include "detail/epilogue.hpp"', '', 'namespace mwrap_protobuf_macros {']
     lines += [f'inline constexpr auto value_{n} = {n};' for n in m['constants']]
     lines.append('}  // namespace mwrap_protobuf_macros\n')
     lines += [f'#undef {n}' for n in m['constants'] + m['functions']]
