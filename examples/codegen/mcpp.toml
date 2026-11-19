@@ -1,0 +1,14 @@
+# templates/codegen instantiated, with the package by path: CI builds and runs
+# it, which is how the codegen path (protoc, protogen, generated code with the
+# module) is tested on every native row that builds protoc. build.mcpp,
+# proto/ and src/main.cpp must equal the template's (CI checks it).
+[package]
+name    = "codegen-example"
+version = "0.1.0"
+
+[targets.codegen-example]
+kind = "bin"
+main = "src/main.cpp"
+
+[dependencies]
+mcpplibs.mwrap.protobuf = { path = "../..", features = ["codegen"] }
