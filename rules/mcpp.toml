@@ -1,0 +1,34 @@
+# protogen — protoc as an importable mcpp build rule: the generic, protobuf-owned
+# layer of code generation. One build-graph edge per .proto, C++ messages by
+# default, any protoc plugin as a parameter.
+#
+#   # mcpp.toml — or simply mcpplibs.mwrap.protobuf = { version = "35.1", features = ["codegen"] }
+#   [build-dependencies]
+#   mcpplibs.protogen = { version = "35.1", host-module = true }
+#
+#   // build.mcpp
+#   import mcpp;
+#   import protogen;
+#   int main() { return protogen::generate_all() ? 0 : 1; }
+#
+# Its version is protobuf's: the rule, the protoc it drives and the runtime the
+# generated code links are one release. The API is the generic layer of
+# grpc-m's grpcgen (same names and options); a gRPC project uses grpcgen, which
+# adds the gRPC plugin.
+#
+# The package name and the module name are equal (`protogen`): mcpp registers a
+# host module under the dependency's package name on older engines and under
+# the declared name from 2026.8.29.1; only equality works on both.
+[package]
+namespace   = "mcpplibs"
+name        = "protogen"
+version     = "35.1"
+standard    = "c++23"
+description = "protoc as an importable mcpp build rule (host-module): one edge per .proto, C++ messages, any protoc plugin"
+license     = "Apache-2.0"
+authors     = ["mcpp-community"]
+repo        = "https://github.com/mcpplibs/protobuf-m"
+platforms   = ["linux", "macos", "windows"]
+
+[targets.protogen]
+kind = "lib"
